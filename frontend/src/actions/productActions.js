@@ -263,7 +263,6 @@ export const fetchCategories = () => async (dispatch, getState) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
       },
     };
 
@@ -277,9 +276,22 @@ export const fetchCategories = () => async (dispatch, getState) => {
     if (message === "Not authorized, token failed") {
       dispatch(logout());
     }
-    dispatch({
-      type: PRODUCT_UPDATE_FAIL,
-      payload: message,
-    });
+  }
+};
+
+export const fetchProductsByCategory = (id) => async (dispatch, getState) => {
+  try {
+    const data = axios.get(
+      `http://localhost:5000/api/products/categories/${id}`
+    );
+    return data;
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
+    }
   }
 };

@@ -207,7 +207,7 @@ const ProductCreateScreen = ({ match, history }) => {
             </Form.Group>
 
             <Button type="submit" variant="primary">
-              Update
+              Save
             </Button>
           </Form>
         )}

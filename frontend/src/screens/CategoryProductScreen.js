@@ -5,24 +5,33 @@ import { Row, Col, ListGroup } from "react-bootstrap";
 import Product from "../components/Product";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import Paginate from "../components/Paginate";
-import ProductCarousel from "../components/ProductCarousel";
-import Meta from "../components/Meta";
-import { listProducts, fetchCategories } from "../actions/productActions";
+import { useParams } from "react-router-dom";
 
-const HomeScreen = ({ match }) => {
-  const keyword = match.params.keyword;
-  const pageNumber = match.params.pageNumber || 1;
+import {
+  fetchProductsByCategory,
+  fetchCategories,
+} from "../actions/productActions";
 
+const CategoryProductScreen = () => {
+  const { id } = useParams();
   const dispatch = useDispatch();
 
-  const productList = useSelector((state) => state.productList);
-  const { loading, error, products, page, pages } = productList;
+  const [products, setProducts] = useState({});
+  const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    dispatch(listProducts(keyword, pageNumber));
-  }, [dispatch, keyword, pageNumber]);
+    setLoading(true);
+    dispatch(fetchProductsByCategory(id))
+      .then((res) => {
+        setProducts(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.log(err);
+      });
+  }, [id, dispatch]);
 
   useEffect(() => {
     dispatch(fetchCategories())
@@ -36,35 +45,22 @@ const HomeScreen = ({ match }) => {
 
   return (
     <>
-      <Meta />
-      {!keyword ? (
-        <ProductCarousel />
-      ) : (
-        <Link to="/" className="btn btn-light">
-          Go Back
-        </Link>
-      )}
       <Row className="mt-5">
         <Col sm={12} md={8} lg={9} xl={9}>
-          <h1>Latest Products</h1>
           {loading ? (
             <Loader />
-          ) : error ? (
-            <Message variant="danger">{error}</Message>
           ) : (
             <>
+              <h1>{products && products.category && products.category.name}</h1>
               <Row>
-                {products.map((product) => (
-                  <Col key={product._id} sm={12} md={6} lg={3} xl={3}>
-                    <Product product={product} />
-                  </Col>
-                ))}
+                {products &&
+                  products.products &&
+                  products.products.map((product) => (
+                    <Col key={product._id} sm={12} md={6} lg={3} xl={3}>
+                      <Product product={product} />
+                    </Col>
+                  ))}
               </Row>
-              <Paginate
-                pages={pages}
-                page={page}
-                keyword={keyword ? keyword : ""}
-              />
             </>
           )}
         </Col>
@@ -87,4 +83,4 @@ const HomeScreen = ({ match }) => {
   );
 };
 
-export default HomeScreen;
+export default CategoryProductScreen;

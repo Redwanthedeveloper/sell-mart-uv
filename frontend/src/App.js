@@ -19,13 +19,14 @@ import ProductListScreen from "./screens/ProductListScreen";
 import ProductEditScreen from "./screens/ProductEditScreen";
 import OrderListScreen from "./screens/OrderListScreen";
 import ProductCreateScreen from "./screens/ProductCreateScreen";
+import CategoryProductScreen from "./screens/CategoryProductScreen";
 
 const App = () => {
   return (
     <Router>
       <Header />
       <main className="py-3">
-        <Container>
+        <Container fluid className="px-5">
           <Route path="/order/:id" component={OrderScreen} />
           <Route path="/shipping" component={ShippingScreen} />
           <Route path="/payment" component={PaymentScreen} />
@@ -34,6 +35,7 @@ const App = () => {
           <Route path="/register" component={RegisterScreen} />
           <Route path="/profile" component={ProfileScreen} />
           <Route path="/product/:id" component={ProductScreen} />
+          <Route path="/category/:id" component={CategoryProductScreen} />
           <Route path="/cart/:id?" component={CartScreen} />
           <Route path="/admin/userlist" component={UserListScreen} />
           <Route path="/admin/user/:id/edit" component={UserEditScreen} />

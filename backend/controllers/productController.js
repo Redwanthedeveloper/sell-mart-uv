@@ -1,4 +1,5 @@
 import asyncHandler from "express-async-handler";
+import Category from "../models/categoryModel.js";
 import Product from "../models/productModel.js";
 
 // @desc    Fetch all products
@@ -40,15 +41,16 @@ const getProductById = asyncHandler(async (req, res) => {
 });
 
 const getProductByCategory = asyncHandler(async (req, res) => {
-  const products = await Product.find({ category: req.params.id }).populate(
-    "category"
-  );
+  const category = await Category.findOne({ _id: req.params.id });
 
-  if (products) {
-    res.json(products);
+  if (category) {
+    const products = await Product.find({ category: req.params.id }).populate(
+      "category"
+    );
+    res.json({ products, category });
   } else {
     res.status(404);
-    throw new Error("Product not found");
+    throw new Error("Category not found");
   }
 });
 // @desc    Delete a product
