@@ -279,6 +279,120 @@ export const fetchCategories = () => async (dispatch, getState) => {
   }
 };
 
+export const deleteCategory = (id) => async (dispatch, getState) => {
+  try {
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+
+    const data = axios.delete(`http://localhost:5000/api/categories/${id}`, config);
+    return data;
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
+    }
+  }
+};
+
+export const createCategory = (category) => async (dispatch, getState) => {
+  try {
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+
+    const data = axios.post(`http://localhost:5000/api/categories/`,  category, config);
+    return data;
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
+    }
+  }
+};
+
+
+export const updateCategory = (category, id) => async (dispatch, getState) => {
+  try {
+    let obj = {
+      name: category
+    }
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+
+    const data = axios.put(`http://localhost:5000/api/categories/${id}`,  obj, config);
+    return data;
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
+    }
+  }
+};
+
+
+export const getCategoryById = (id) => async (dispatch, getState) => {
+  try {
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+
+    const data = axios.get(`http://localhost:5000/api/categories/${id}`, config);
+    return data;
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
+    }
+  }
+};
+
+
 export const fetchProductsByCategory = (id) => async (dispatch, getState) => {
   try {
     const data = axios.get(

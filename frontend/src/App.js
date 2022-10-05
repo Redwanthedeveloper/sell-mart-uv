@@ -20,6 +20,9 @@ import ProductEditScreen from "./screens/ProductEditScreen";
 import OrderListScreen from "./screens/OrderListScreen";
 import ProductCreateScreen from "./screens/ProductCreateScreen";
 import CategoryProductScreen from "./screens/CategoryProductScreen";
+import CategoryCreateScreen from "./screens/CategoryCreateScreen";
+import CategoryListScreen from "./screens/CategoryListScreen";
+import CategoryEditScreen from "./screens/CategoryEditScreen";
 
 const App = () => {
   return (
@@ -49,6 +52,17 @@ const App = () => {
             component={ProductListScreen}
             exact
           />
+           <Route
+            path="/admin/create-category"
+            component={CategoryCreateScreen}
+            exact
+          />
+           <Route
+            path="/admin/categories"
+            component={CategoryListScreen}
+            exact
+          />
+           <Route path="/admin/category/:id/edit" component={CategoryEditScreen} />
           <Route path="/admin/create-product" component={ProductCreateScreen} />
           <Route path="/admin/product/:id/edit" component={ProductEditScreen} />
           <Route path="/admin/orderlist" component={OrderListScreen} />

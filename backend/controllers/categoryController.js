@@ -13,31 +13,31 @@ const getCategories = asyncHandler(async (req, res) => {
 // @desc    Fetch single product
 // @route   GET /api/products/:id
 // @access  Public
-// const getProductById = asyncHandler(async (req, res) => {
-//   const product = await Product.findById(req.params.id);
+const getCategoryById = asyncHandler(async (req, res) => {
+  const category = await Category.findById(req.params.id);
 
-//   if (product) {
-//     res.json(product);
-//   } else {
-//     res.status(404);
-//     throw new Error("Product not found");
-//   }
-// });
+  if (category) {
+    res.json(category);
+  } else {
+    res.status(404);
+    throw new Error("category not found");
+  }
+});
 
 // @desc    Delete a product
 // @route   DELETE /api/products/:id
 // @access  Private/Admin
-// const deleteProduct = asyncHandler(async (req, res) => {
-//   const product = await Product.findById(req.params.id);
+const deleteCategory = asyncHandler(async (req, res) => {
+  const category = await Category.findById(req.params.id);
 
-//   if (product) {
-//     await product.remove();
-//     res.json({ message: "Product removed" });
-//   } else {
-//     res.status(404);
-//     throw new Error("Product not found");
-//   }
-// });
+  if (category) {
+    await category.remove();
+    res.json({ message: "category removed" });
+  } else {
+    res.status(404);
+    throw new Error("category not found");
+  }
+});
 
 // @desc    Create a product
 // @route   POST /api/products
@@ -54,27 +54,25 @@ const createCategory = asyncHandler(async (req, res) => {
 // @desc    Update a product
 // @route   PUT /api/products/:id
 // @access  Private/Admin
-// const updateProduct = asyncHandler(async (req, res) => {
-//   const { name, price, description, image, brand, category, countInStock } =
-//     req.body;
+const updateCategory = asyncHandler(async (req, res) => {
+  const { name } = req.body;
 
-//   const product = await Product.findById(req.params.id);
+  const category = await Category.findById(req.params.id);
 
-//   if (product) {
-//     product.name = name;
-//     product.price = price;
-//     product.description = description;
-//     product.image = image;
-//     product.brand = brand;
-//     product.category = category;
-//     product.countInStock = countInStock;
+  if (category) {
+    category.name = name;
+    const updatedProduct = await category.save();
+    res.json(updatedProduct);
+  } else {
+    res.status(404);
+    throw new Error("category not found");
+  }
+});
 
-//     const updatedProduct = await product.save();
-//     res.json(updatedProduct);
-//   } else {
-//     res.status(404);
-//     throw new Error("Product not found");
-//   }
-// });
-
-export { createCategory, getCategories };
+export {
+  createCategory,
+  getCategories,
+  deleteCategory,
+  updateCategory,
+  getCategoryById,
+};
